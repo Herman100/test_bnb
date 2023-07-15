@@ -3,6 +3,8 @@
 entry point of the command interpreter"""
 
 import cmd
+from models.base_model import BaseModel
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -19,6 +21,95 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing when an empty line is entered"""
         pass
+
+    def do_create(self, arg):
+        """Create a new instance of BaseModel"""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] in ["BaseModel"]:
+            new_instance = eval(args[0])()
+            new_instance.save()
+            print(new_instance.id)
+        else:
+            print("** class doesn't exist **")
+
+    def do_show(self, arg):
+        """Prints string representation of an instance"""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif args[0] not in ["BaseModel"]:
+            print("** class doesn't exist **")
+        else:
+            key = "{}.{}".format(args[0], args[1])
+            instances = storage.all()
+            if key in instances:
+                print(instances[key])
+            else:
+                print("** no instance found **")
+
+    def do_destroy(self, arg):
+        """Deletes an instance based on its ID"""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif args[0] not in ["BaseModel"]:
+            print("** class doesn't exist **")
+        else:
+            key = "{}.{}".format(args[0], args[1])
+            instances = storage.all()
+            if key in instances:
+                del instances[key]
+                storage.save()
+            else:
+                print("** no instance found **")
+
+    def do_update(self, arg):
+        """Updates an instance based on its ID"""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif len(args) == 2:
+            print("** attribute name missing **")
+        elif len(args) == 3:
+            print("** value missing **")
+        elif args[0] not in ["BaseModel"]:
+            print("** class doesn't exist **")
+        else:
+            key = "{}.{}".format(args[0], args[1])
+            instances = storage.all()
+            if key in instances:
+                instance = instances[key]
+                attr_name = args[2]
+                attr_value = args[3].strip('"')
+                try:
+                    attr_type = type(getattr(instance, attr_name))
+                    attr_value = attr_type(attr_value)
+                except AttributeError:
+                    pass
+                setattr(instance, attr_name, attr_value)
+                storage.save()
+            else:
+                print("** no instance found **")
+
+    def do_all(self, arg):
+        """Prints all instances"""
+        args = arg.split()
+        instances = storage.all()
+        if len(args) == 0:
+            print([str(value) for value in instances.values()])
+        elif args[0] not in ["BaseModel"]:
+            print("** class doesn't exist **")
+        else:
+            print([str(value) for value in instances.values()
+                  if value.__class__.__name__ == args[0]])
 
 
 if __name__ == '__main__':
