@@ -3,6 +3,8 @@
 
 import unittest
 from console import HBNBCommand
+from io import StringIO
+import sys
 
 
 class TestConsole(unittest.TestCase):
@@ -17,6 +19,15 @@ class TestConsole(unittest.TestCase):
         """Test the do_eof method"""
         hbnb = HBNBCommand()
         self.assertEqual(hbnb.do_EOF(''), True)
+
+    def test_emptyline(self):
+        """Test that an empty line doesn't execute anything"""
+        hbnb = HBNBCommand()
+        output = StringIO()
+        sys.stdout = output
+        hbnb.onecmd('\n')
+        self.assertEqual(output.getvalue(), '')
+        sys.stdout = sys.__stdout__
 
 
 if __name__ == '__main__':
