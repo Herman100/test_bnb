@@ -122,6 +122,18 @@ class HBNBCommand(cmd.Cmd):
             print([str(value) for value in instances.values()
                   if value.__class__.__name__ == args[0]])
 
+    def default(self, line):
+        """Method called on an input line when
+        the command prefix is not recognized"""
+        args = line.split('.')
+        if len(args) == 2:
+            class_name = args[0]
+            command = args[1]
+            if command == "all()":
+                self.do_all(class_name)
+        else:
+            print("*** Unknown syntax: {}".format(line))
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
