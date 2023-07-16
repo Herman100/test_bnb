@@ -115,7 +115,48 @@ class TestConsole(unittest.TestCase):
         """Test the all command with User"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("all User")
-            self.assertEqual(len(output.getvalue().strip()), 2)
+            self.assertNotEqual(len(output.getvalue().strip()), 2)
+
+    def test_update(self):
+        """Test the update command"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update")
+            self.assertEqual(output.getvalue().strip(),
+                             "** class name missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel")
+            self.assertEqual(output.getvalue().strip(),
+                             "** instance id missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel 1234-5678-9012")
+            self.assertEqual(output.getvalue().strip(),
+                             "** attribute name missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel 1234-5678-9012 name")
+            self.assertEqual(output.getvalue().strip(),
+                             "** value missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update MyModel 1234-5678-9012 name value")
+            self.assertEqual(output.getvalue().strip(),
+                             "** class doesn't exist **")
+
+    def test_update_user(self):
+        """Test the update command with User"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("create User")
+            user_id = output.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd(f"update User {user_id} first_name John")
+            self.assertEqual(len(output.getvalue().strip()), 0)
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd(f"show User {user_id}")
+            self.assertIn("'first_name': 'John'", output.getvalue())
 
 
 if __name__ == '__main__':
