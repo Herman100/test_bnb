@@ -6,6 +6,11 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -28,7 +33,8 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] in ["BaseModel", "User"]:
+        elif args[0] in ["BaseModel", "User", "State", "City",
+                         "Place", "Amenity", "Review"]:
             new_instance = eval(args[0])()
             new_instance.save()
             print(new_instance.id)
@@ -42,7 +48,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif len(args) == 1:
             print("** instance id missing **")
-        elif args[0] not in ["BaseModel", "User"]:
+        elif args[0] not in ["BaseModel", "User", "State", "City",
+                             "Place", "Amenity", "Review"]:
             print("** class doesn't exist **")
         else:
             key = "{}.{}".format(args[0], args[1])
@@ -59,7 +66,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif len(args) == 1:
             print("** instance id missing **")
-        elif args[0] not in ["BaseModel", "User"]:
+        elif args[0] not in ["BaseModel", "User", "State", "City",
+                             "Place", "Amenity", "Review"]:
             print("** class doesn't exist **")
         else:
             key = "{}.{}".format(args[0], args[1])
@@ -81,7 +89,8 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
         elif len(args) == 3:
             print("** value missing **")
-        elif args[0] not in ["BaseModel", "User"]:
+        elif args[0] not in ["BaseModel", "User", "State", "City",
+                             "Place", "Amenity", "Review"]:
             print("** class doesn't exist **")
         else:
             key = "{}.{}".format(args[0], args[1])
@@ -106,7 +115,8 @@ class HBNBCommand(cmd.Cmd):
         instances = storage.all()
         if len(args) == 0:
             print([str(value) for value in instances.values()])
-        elif args[0] not in ["BaseModel", "User"]:
+        elif args[0] not in ["BaseModel", "User", "State", "City",
+                             "Place", "Amenity", "Review"]:
             print("** class doesn't exist **")
         else:
             print([str(value) for value in instances.values()
