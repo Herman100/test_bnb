@@ -123,8 +123,8 @@ class HBNBCommand(cmd.Cmd):
                   if value.__class__.__name__ == args[0]])
 
     def default(self, line):
-        """Method called on an input line when the
-        command prefix is not recognized"""
+        """Method called on an input line when
+        the command prefix is not recognized"""
         args = line.split('.')
         if len(args) == 2:
             class_name = args[0]
@@ -133,6 +133,9 @@ class HBNBCommand(cmd.Cmd):
                 self.do_all(class_name)
             elif command == "count()":
                 self.do_count(class_name)
+            elif command.startswith("show(") and command.endswith(")"):
+                instance_id = command[5:-1].strip('"')
+                self.do_show("{} {}".format(class_name, instance_id))
         else:
             print("*** Unknown syntax: {}".format(line))
 
