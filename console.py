@@ -123,16 +123,32 @@ class HBNBCommand(cmd.Cmd):
                   if value.__class__.__name__ == args[0]])
 
     def default(self, line):
-        """Method called on an input line when
-        the command prefix is not recognized"""
+        """Method called on an input line when the
+        command prefix is not recognized"""
         args = line.split('.')
         if len(args) == 2:
             class_name = args[0]
             command = args[1]
             if command == "all()":
                 self.do_all(class_name)
+            elif command == "count()":
+                self.do_count(class_name)
         else:
             print("*** Unknown syntax: {}".format(line))
+
+    def do_count(self, arg):
+        """Prints the number of instances of a class"""
+        args = arg.split()
+        instances = storage.all()
+        if len(args) == 0:
+            print(len(instances))
+        elif args[0] not in ["BaseModel", "User", "State", "City",
+                             "Place", "Amenity", "Review"]:
+            print("** class doesn't exist **")
+        else:
+            count = len([value for value in instances.values()
+                         if value.__class__.__name__ == args[0]])
+            print(count)
 
 
 if __name__ == '__main__':
