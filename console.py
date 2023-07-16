@@ -136,6 +136,9 @@ class HBNBCommand(cmd.Cmd):
             elif command.startswith("show(") and command.endswith(")"):
                 instance_id = command[5:-1].strip('"')
                 self.do_show("{} {}".format(class_name, instance_id))
+            elif command.startswith("destroy(") and command.endswith(")"):
+                instance_id = command[8:-1].strip('"')
+                self.do_destroy("{} {}".format(class_name, instance_id))
         else:
             print("*** Unknown syntax: {}".format(line))
 
