@@ -84,6 +84,33 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(output.getvalue().strip(),
                              "** class doesn't exist **")
 
+    def test_update(self):
+        """Test the update command"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update")
+            self.assertEqual(output.getvalue().strip(),
+                             "** class name missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel")
+            self.assertEqual(output.getvalue().strip(),
+                             "** instance id missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel 1234-5678-9012")
+            self.assertEqual(output.getvalue().strip(),
+                             "** attribute name missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel 1234-5678-9012 name")
+            self.assertEqual(output.getvalue().strip(),
+                             "** value missing **")
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update MyModel 1234-5678-9012 name value")
+            self.assertEqual(output.getvalue().strip(),
+                             "** class doesn't exist **")
+
     def test_create_user(self):
         """Test the create command with User"""
         with patch('sys.stdout', new=StringIO()) as output:
@@ -116,33 +143,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("all User")
             self.assertNotEqual(len(output.getvalue().strip()), 2)
-
-    def test_update(self):
-        """Test the update command"""
-        with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("update")
-            self.assertEqual(output.getvalue().strip(),
-                             "** class name missing **")
-
-        with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("update BaseModel")
-            self.assertEqual(output.getvalue().strip(),
-                             "** instance id missing **")
-
-        with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("update BaseModel 1234-5678-9012")
-            self.assertEqual(output.getvalue().strip(),
-                             "** attribute name missing **")
-
-        with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("update BaseModel 1234-5678-9012 name")
-            self.assertEqual(output.getvalue().strip(),
-                             "** value missing **")
-
-        with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("update MyModel 1234-5678-9012 name value")
-            self.assertEqual(output.getvalue().strip(),
-                             "** class doesn't exist **")
 
     def test_update_user(self):
         """Test the update command with User"""
