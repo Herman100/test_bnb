@@ -6,6 +6,7 @@ from console import HBNBCommand
 from io import StringIO
 import sys
 from unittest.mock import patch
+from models.user import User
 
 
 class TestConsole(unittest.TestCase):
@@ -82,6 +83,39 @@ class TestConsole(unittest.TestCase):
             HBNBCommand().onecmd("all MyModel")
             self.assertEqual(output.getvalue().strip(),
                              "** class doesn't exist **")
+
+    def test_create_user(self):
+        """Test the create command with User"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("create User")
+            user_id = output.getvalue().strip()
+            self.assertGreater(len(user_id), 0)
+
+    def test_show_user(self):
+        """Test the show command with User"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("create User")
+            user_id = output.getvalue().strip()
+
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"show User {user_id}")
+                self.assertGreater(len(output.getvalue().strip()), 0)
+
+    def test_destroy_user(self):
+        """Test the destroy command with User"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("create User")
+            user_id = output.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd(f"destroy User {user_id}")
+            self.assertEqual(len(output.getvalue().strip()), 0)
+
+    def test_all_user(self):
+        """Test the all command with User"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("all User")
+            self.assertGreater(len(output.getvalue().strip()), 2)
 
 
 if __name__ == '__main__':

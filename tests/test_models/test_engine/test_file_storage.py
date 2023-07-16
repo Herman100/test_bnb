@@ -6,6 +6,7 @@ import unittest
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 import os
+from models.user import User
 
 
 class TestFileStorage(unittest.TestCase):
@@ -45,6 +46,15 @@ class TestFileStorage(unittest.TestCase):
         self.storage.reload()
         key = "{}.{}".format(self.base_model.__class__.__name__,
                              self.base_model.id)
+        self.assertIn(key, self.storage.all())
+
+    from models.user import User
+
+    def test_new_user(self):
+        """Test that new method correctly adds User instances"""
+        user = User()
+        self.storage.new(user)
+        key = "{}.{}".format(user.__class__.__name__, user.id)
         self.assertIn(key, self.storage.all())
 
 
