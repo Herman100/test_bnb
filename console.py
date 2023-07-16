@@ -5,6 +5,7 @@ entry point of the command interpreter"""
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -27,7 +28,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] in ["BaseModel"]:
+        elif args[0] in ["BaseModel", "User"]:
             new_instance = eval(args[0])()
             new_instance.save()
             print(new_instance.id)
@@ -41,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif len(args) == 1:
             print("** instance id missing **")
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         else:
             key = "{}.{}".format(args[0], args[1])
@@ -58,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif len(args) == 1:
             print("** instance id missing **")
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         else:
             key = "{}.{}".format(args[0], args[1])
@@ -80,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
         elif len(args) == 3:
             print("** value missing **")
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         else:
             key = "{}.{}".format(args[0], args[1])
@@ -105,7 +106,7 @@ class HBNBCommand(cmd.Cmd):
         instances = storage.all()
         if len(args) == 0:
             print([str(value) for value in instances.values()])
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         else:
             print([str(value) for value in instances.values()
