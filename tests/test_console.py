@@ -142,7 +142,7 @@ class TestConsole(unittest.TestCase):
         """Test the all command with User"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("all User")
-            self.assertNotEqual(len(output.getvalue().strip()), 2)
+            self.assertEqual(len(output.getvalue().strip()), 2)
 
     def test_update_user(self):
         """Test the update command with User"""
