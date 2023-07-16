@@ -7,6 +7,11 @@ from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 import os
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class TestFileStorage(unittest.TestCase):
@@ -48,14 +53,77 @@ class TestFileStorage(unittest.TestCase):
                              self.base_model.id)
         self.assertIn(key, self.storage.all())
 
-    from models.user import User
-
     def test_new_user(self):
         """Test that new method correctly adds User instances"""
         user = User()
         self.storage.new(user)
         key = "{}.{}".format(user.__class__.__name__, user.id)
         self.assertIn(key, self.storage.all())
+
+    def test_new_state(self):
+        """Test that new method correctly adds State instances"""
+        state = State()
+        self.storage.new(state)
+        key = "{}.{}".format(state.__class__.__name__, state.id)
+        self.assertIn(key, self.storage.all())
+
+    def test_new_city(self):
+        """Test that new method correctly adds City instances"""
+        city = City()
+        self.storage.new(city)
+        key = "{}.{}".format(city.__class__.__name__, city.id)
+        self.assertIn(key, self.storage.all())
+
+    def test_new_amenity(self):
+        """Test that new method correctly adds Amenity instances"""
+        amenity = Amenity()
+        self.storage.new(amenity)
+        key = "{}.{}".format(amenity.__class__.__name__, amenity.id)
+        self.assertIn(key, self.storage.all())
+
+    def test_new_place(self):
+        """Test that new method correctly adds Place instances"""
+        place = Place()
+        self.storage.new(place)
+        key = "{}.{}".format(place.__class__.__name__, place.id)
+        self.assertIn(key, self.storage.all())
+
+    def test_new_review(self):
+        """Test that new method correctly adds Review instances"""
+        review = Review()
+        self.storage.new(review)
+        key = "{}.{}".format(review.__class__.__name__, review.id)
+        self.assertIn(key, self.storage.all())
+
+    def test_reload_with_new_classes(self):
+        """Test that reload method correctly
+        handles instances of new classes"""
+        state = State()
+        city = City()
+        amenity = Amenity()
+        place = Place()
+        review = Review()
+
+        self.storage.new(state)
+        self.storage.new(city)
+        self.storage.new(amenity)
+        self.storage.new(place)
+        self.storage.new(review)
+
+        state_key = "{}.{}".format(state.__class__.__name__, state.id)
+        city_key = "{}.{}".format(city.__class__.__name__, city.id)
+        amenity_key = "{}.{}".format(amenity.__class__.__name__, amenity.id)
+        place_key = "{}.{}".format(place.__class__.__name__, place.id)
+        review_key = "{}.{}".format(review.__class__.__name__, review.id)
+
+        self.storage.save()
+        self.storage.reload()
+
+        self.assertIn(state_key, self.storage.all())
+        self.assertIn(city_key, self.storage.all())
+        self.assertIn(amenity_key, self.storage.all())
+        self.assertIn(place_key, self.storage.all())
+        self.assertIn(review_key, self.storage.all())
 
 
 if __name__ == '__main__':

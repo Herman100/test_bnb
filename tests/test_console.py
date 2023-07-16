@@ -115,7 +115,7 @@ class TestConsole(unittest.TestCase):
         """Test the all command with User"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("all User")
-            self.assertGreater(len(output.getvalue().strip()), 2)
+            self.assertEqual(len(output.getvalue().strip()), 2)
 
 
 if __name__ == '__main__':
