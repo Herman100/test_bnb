@@ -139,6 +139,15 @@ class HBNBCommand(cmd.Cmd):
             elif command.startswith("destroy(") and command.endswith(")"):
                 instance_id = command[8:-1].strip('"')
                 self.do_destroy("{} {}".format(class_name, instance_id))
+            elif command.startswith("update(") and command.endswith(")"):
+                update_args = command[7:-1].split(", ")
+                if len(update_args) == 3:
+                    instance_id = update_args[0].strip('"')
+                    attribute_name = update_args[1].strip('"')
+                    attribute_value = update_args[2].strip('"')
+                    self.do_update("{} {} {} {}".format(
+                        class_name, instance_id,
+                        attribute_name, attribute_value))
         else:
             print("*** Unknown syntax: {}".format(line))
 
